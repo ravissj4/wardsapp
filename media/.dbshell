@@ -1,0 +1,6 @@
+show dbs
+use mean
+db.application.insert({"name": "TIBCO"});
+show dbs
+show collections
+db.application.find()

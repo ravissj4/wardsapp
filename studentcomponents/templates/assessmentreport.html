@@ -1,0 +1,120 @@
+{% extends "page1/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% if user.is_authenticated %}
+<style>
+.style-table > thead > tr >th{
+    color: #FFFFFF;
+    background-color: black;
+    }
+</style>
+<div class="" style="padding-top:0px;">
+    <ol class="breadcrumb" style="background: transparent; font-size:14px; font-weight:700;">
+    <li class="breadcrumb-item"><a href="{% url 'project-home' %}" style="text-decoration:none">Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Student Progress Report</li>
+  </ol><br>
+    <div class="container" style="border-radius:5px;">
+        <div class="card" style="border-radius:5px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+            <div class="card-body" style="padding: 25px;">
+
+            <div class="form-row" style="padding:5px;">
+                <div>Admission No: {{ student_details.admission_number }}</div><br></div>
+                <div class="form-row" style="padding:5px;">
+                <div>Student Name: {{ student_details.first_name }} {{ student_details.last_name }}</div>
+            </div>
+                <div class="form-row" style="padding:5px;">
+                <div>Age: {{ student_details.age }}</div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <div>Gender: {{ student_details.gender }}</div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div>Height: {{ student_details.height }}</div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div>Weight: {{ student_details.weight }}</div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div>Attendance: {{ student_details.attendance }}</div>
+            </div>
+                <br>
+            <div style="overflow:auto;">
+            <table id="dtBasicExample" class="table table-bordered table-hover table-sm style-table" cellspacing="20" style="background-color:#FFFFFF;">
+                <thead>
+                    <tr>
+                        <th colspan="2">
+                            <center>Scholastic</center>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody><tr><th>Subject</th><th>Grade</th></tr>
+                <tr>
+                    {% for grad in scholastic %}
+
+                        <td>{{ grad.lookup_inputvalue }}</td>
+                        {% for a in assess %}
+                            {% if a.lookup_type.id == grad.id %}
+                            <td>{{ a.grade }}</td>
+                            {% endif %}
+                        {% endfor %}
+                </tr>
+                    {% endfor %}
+
+                </tbody>
+                <thead>
+                    <tr>
+                        <th colspan="2">
+                            <center>Creative Arts</center>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody><tr><th>Subject</th><th>Grade</th></tr>
+                    {% for grad in creative %}<tr>
+                    <td>{{ grad.lookup_inputvalue }}</td>
+                        {% for a in assess %}
+                            {% if a.lookup_type.id == grad.id %}
+                            <td>{{ a.grade }}</td>
+                            {% endif %}
+                        {% endfor %}
+                </tr>
+                    {% endfor %}
+                </tbody>
+                <thead>
+                    <tr>
+                        <th colspan="2">
+                            <center>Concept Formation</center>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody><tr><th>Subject</th><th>Grade</th></tr>
+                    {% for grad in concept %}
+                    <tr>
+                         <td>{{ grad.lookup_inputvalue }}</td>
+                        {% for a in assess %}
+                            {% if a.lookup_type.id == grad.id %}
+                            <td>{{ a.grade }}</td>
+                            {% endif %}
+                        {% endfor %}
+                </tr>
+                    {% endfor %}
+                </tbody>
+                <thead>
+                    <tr>
+                        <th colspan="2">
+                            <center>Other Activities</center>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody><tr><th>Subject</th><th>Grade</th></tr>
+                    {% for grad in other %}
+                    <tr>
+                     <td>{{ grad.lookup_inputvalue }}</td>
+                        {% for a in assess %}
+                            {% if a.lookup_type.id == grad.id %}
+                            <td>{{ a.grade }}</td>
+                            {% endif %}
+                        {% endfor %}
+                </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            </div>
+
+        </div>
+    </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

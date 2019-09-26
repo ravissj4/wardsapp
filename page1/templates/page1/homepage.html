@@ -1,0 +1,169 @@
+{% extends "page1/base.html" %}
+{% load customtag %}
+{% block content %}
+<style>
+
+
+    @media only screen and (max-width: 600px){
+		#panel{
+			width:200%;
+			margin-left:10px;
+			float:center;
+			background: rgba(76, 175, 80, 0.85);padding:10px 10px 0 10px; font-weight:500;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+
+		}
+			#quote{
+			float: right;
+			display:none;
+			col:unset;
+	        }
+	      .style-table > thead > tr >th{
+    color: #FFFFFF;
+
+    }
+    .tablefont{
+        color: #FFFFFF;
+    }
+	table a{
+	    text-decoration:none !important;
+	    color: #FFFFFF
+	}
+	table a:hover{
+	    color:#FFFFFF;
+	    underline:none;
+	    font-weight:700;
+	    	}
+	}
+	@media only screen and (min-width: 600px){
+		#panel{
+			width:60%;
+			margin-left:0px;
+			float:left;background: rgba(76, 175, 80, 0.85);padding:10px 10px 0 10px; font-weight:500;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+		}
+		#quote-col{
+
+		}
+		#quote{
+			font-size:55px;
+			color:#FFFFFF;font-weight:900; position: relative;
+
+              -webkit-animation: mymove 3s;  /* Safari 4.0 - 8.0 */
+              -webkit-animation-fill-mode: forwards; /* Safari 4.0 - 8.0 */
+              animation: mymove 3s;
+              animation-fill-mode: forwards;
+
+              text-shadow: 0 1px 0 #ccc,
+               0 2px 0 #c9c9c9,
+               0 3px 0 #bbb,
+               0 4px 0 #b9b9b9,
+               0 5px 0 #aaa,
+               0 6px 1px rgba(0,0,0,.1),
+               0 0 5px rgba(0,0,0,.1),
+               0 1px 3px rgba(0,0,0,.3),
+               0 3px 5px rgba(0,0,0,.2),
+               0 5px 10px rgba(0,0,0,.25),
+               0 10px 10px rgba(0,0,0,.2),
+               0 20px 20px rgba(0,0,0,.15);
+	    }
+        /* Safari 4.0 - 8.0 */
+        @-webkit-keyframes mymove {
+          from {top: 250px;}
+          to {top: 100px;}
+        }
+
+        @keyframes mymove {
+          from {top: 250px;}
+          to {top: 100px;}
+        }
+
+        .every{
+
+        }
+
+        .style-table > thead > tr >th{
+    color: #FFFFFF;
+
+    }
+    .tablefont{
+        color: #FFFFFF;
+    }
+	table a{
+	    text-decoration:none !important;
+	    color: #FFFFFF
+	}
+	table a:hover{
+	    color:#FFFFFF;
+	    underline:none;
+	    font-weight:700;
+	    	}
+
+	}
+
+
+</style>
+{% if request.user|parent:"staff" %}
+<div class="container" style="margin-top:70px; text-align:center;">
+<div class="row">
+<div class="col">
+    <div class="" style="" id="panel">
+        <table id="dtBasicExample" class="table table-bordered table-hover style-table" style=";">
+<tbody>
+            <tr>
+                <td class="tablefont">
+                    <a href="{% url 'coord' %}">COORDINATOR FORM</a>
+                </td>
+            </tr>
+            <tr>
+                <td class="tablefont">
+                    <a href="{% url 'student_authentication' %}">ADMISSION FORM</a>
+                </td>
+            </tr>
+            <tr>
+                <td class="tablefont">
+                    <a href="{% url 'payment_form' %}">FEE PAYMENT FORM</a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="tablefont">
+                    <a href="{% url 'student_class_report' %}">STUDENT'S CLASS INFORMATION</a>
+                </td>
+            </tr>
+            <tr>
+                <td class="tablefont">
+                    <a href="{% url 'student_teacher_report' %}">STUDENTS UNDER TEACHER INFO</a>
+                </td>
+            </tr>
+            <tr>
+                <td class="tablefont">
+                    <a href="{% url 'student_list' %}">STUDENT FULL INFORMATION</a>
+                </td>
+            </tr>
+            <tr>
+                <td class="tablefont">
+                    <a href="{% url 'payment_due' %}">ADMISSION FEE DETAILS</a>
+                </td>
+            </tr>
+            <tr>
+                <td class="tablefont">
+                    <a href="{% url 'payment_due' %}">UNIFORM FEE DETAILS</a>
+                </td>
+            </tr>
+            <tr>
+                <td class="tablefont">
+                    <a href="{% url 'payment_due' %}">STUDENT'S MONTHLY FEE DETAILS</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="col" id="quote-col">
+    <div id="quote"><p><span class="every">EVERY</span> CHILD is gifted and talented.<br> EVERY SINGLE ONE</p></div>
+
+</div>
+    </div>
+</div>
+{% endif %}
+{% endblock content %}

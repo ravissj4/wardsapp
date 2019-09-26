@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{report}}</title>
+</head>
+<style>
+
+      .heading {
+      font-weight: 700;
+      font-size: 16px;
+      }
+      .head{
+      font-weight: 400;
+      font-size: 14px;
+      margin-left:0px;
+
+      }
+      .hea{
+      font-weight: 400;
+      font-size: 15px;
+      }
+</style>
+<body>
+<p style="text-align:center"> <img src="../media/wards-logo.png"> </p>
+
+<u><h3 style="text-align:center;font-size: 18px;">Co-Ordinator's  Report</h3></u><br>
+<p style="font-size:15px;"><b>Date</b>: {% now "jS F Y" %}</p>
+<table border="1" cellpadding="5" >
+{% for i in student %}
+    <tr><td class="heading">Student Name &nbsp&nbsp&nbsp </td><td class="head">{{ i.first_name|title}}&emsp;{{ i.last_name|title}}</td></tr>
+<tr><td class="heading"> Disability &nbsp&nbsp&nbsp</td><td class="head"> {{i.disability|title}}</td></tr>
+<tr><td class="heading">Self Help Skills &nbsp&nbsp&nbsp</td><td class="head"> {{i.self_help_skill}}</td></tr>
+<tr><td class="heading">Behavioural Skills &nbsp&nbsp&nbsp</td><td class="head">{{i.behavioural_issues|title}}</td></tr>
+<tr><td class="heading">Medication Taken &nbsp&nbsp&nbsp</td><td class="head">{{i.medication_taken|title}}</td></tr>
+<tr><td class="heading">Any Known Allergies &nbsp&nbsp&nbsp</td><td class="head">{{i.allergy|title}}</td></tr>
+<tr><td class="heading">Additional Remarks &nbsp&nbsp&nbsp</td><td class="head">{{i.remarks|title}}</td> </tr>
+
+
+
+</table>
+</body><br><br><br>
+
+<table cellpadding="10" border="1">
+    <span class="heading">For office purpose</span>
+    <tr align="right">
+    <th class="hea" style="width:300px;">Approved For Admission(Co-Ordinator) <br><br> ____________________</th>
+    <th class="hea"> Admission Number <br><br>{{i.admission_no}}</th>
+    <th class="hea">Class <br><br>{{i.class1}}</th>
+    <th class="hea">Class Teacher  <br><br>{{i.class_teacher|title}}</th>
+    </tr>
+
+</table>
+{% endfor %}
+</html>

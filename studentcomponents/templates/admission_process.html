@@ -1,0 +1,746 @@
+{% extends "page1/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% if user.is_authenticated %}
+<meta name="viewport" content="width=device-width, initial-scale=1.0" xmlns="http://www.w3.org/1999/html">
+<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+<script src="http://code.jquery.com/jquery-1.6.1.min.js"></script>
+<style>
+#scroll {
+            overflow-y: scroll;
+            max-height: 520px;
+            padding: 1rem
+        }
+#hidden_div{
+    display:none;
+}
+.steps-form-2 {
+    display: table;
+    width: 100%;
+    position: relative; }
+.steps-form-2 .steps-row-2 {
+    display: table-row; }
+.steps-form-2 .steps-row-2:before {
+    top: 14px;
+    bottom: 0;
+    position: absolute;
+    content: " ";
+    width: 100%;
+    height: 2px;
+    background-color: #7283a7; }
+.steps-form-2 .steps-row-2 .steps-step-2 {
+    display: table-cell;
+    text-align: center;
+    position: relative; }
+.steps-form-2 .steps-row-2 .steps-step-2 p {
+    margin-top: 0.5rem; }
+.steps-form-2 .steps-row-2 .steps-step-2 button[disabled] {
+    opacity: 1 !important;
+    filter: alpha(opacity=100) !important; }
+.steps-form-2 .steps-row-2 .steps-step-2 .btn-circle-2 {
+    width: 70px;
+    height: 70px;
+    border: 2px solid #59698D;
+    background-color: white !important;
+    color: #59698D !important;
+    border-radius: 50%;
+    padding: 22px 18px 15px 18px;
+    margin-top: -22px; }
+.steps-form-2 .steps-row-2 .steps-step-2 .btn-circle-2:hover {
+    border: 2px solid #4285F4;
+    color: #4285F4 !important;
+    background-color: white !important; }
+.steps-form-2 .steps-row-2 .steps-step-2 .btn-circle-2 .fa {
+    font-size: 1.7rem;
+     }
+.round-button{
+    border-radius: 50%;
+}
+
+     input[type=date]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    display: none;
+}
+</style>
+
+
+
+<script>
+    jQuery(document).delegate('a.add-recordsib', 'click', function(e) {
+     e.preventDefault();
+     var content = jQuery('#sample_tablesib tr'),
+     size = jQuery('#tbl_postssib >tbody >tr').length + 1,
+     element = null,
+     element = content.clone();
+     element.attr('id', 'recsib-'+size);
+     element.find('.delete-recordsib').attr('data-id', size);
+     element.appendTo('#tbl_posts_bodysib');
+     element.find('.sn').html(size);
+   });
+   jQuery(document).delegate('a.delete-recordsib', 'click', function(e) {
+     e.preventDefault();
+     var didConfirm = confirm("Are you sure You want to delete");
+     if (didConfirm == true) {
+      var id = jQuery(this).attr('data-id');
+      var targetDiv = jQuery(this).attr('targetDiv');
+      jQuery('#recsib-' + id).remove();
+
+    //regnerate index number on table
+    $('#tbl_posts_bodysib tr').each(function(index) {
+      //alert(index);
+      $(this).find('span.sn').html(index+1);
+    });
+    return true;
+  } else {
+    return false;
+  }
+});
+jQuery(document).delegate('a.add-record', 'click', function(e) {
+     e.preventDefault();
+     var content = jQuery('#sample_table tr'),
+     size = jQuery('#tbl_posts >tbody >tr').length + 1,
+     element = null,
+     element = content.clone();
+     element.attr('id', 'rec-'+size);
+     element.find('.delete-record').attr('data-id', size);
+     element.appendTo('#tbl_posts_body');
+     element.find('.sn').html(size);
+   });
+   jQuery(document).delegate('a.delete-record', 'click', function(e) {
+     e.preventDefault();
+     var didConfirm = confirm("Are you sure You want to delete");
+     if (didConfirm == true) {
+      var id = jQuery(this).attr('data-id');
+      var targetDiv = jQuery(this).attr('targetDiv');
+      jQuery('#rec-' + id).remove();
+
+    //regnerate index number on table
+    $('#tbl_posts_body tr').each(function(index) {
+      //alert(index);
+      $(this).find('span.sn').html(index+1);
+    });
+    return true;
+  } else {
+    return false;
+  }
+});
+jQuery(document).delegate('a.add-recordparent', 'click', function(e) {
+     e.preventDefault();
+     var content = jQuery('#sample_tableparent tr'),
+     size = jQuery('#tbl_postsparent >tbody >tr').length + 1,
+     element = null,
+     element = content.clone();
+     element.attr('id', 'recparent-'+size);
+     element.find('.delete-recordparent').attr('data-id', size);
+     element.appendTo('#tbl_posts_bodyparent');
+     element.find('.sn').html(size);
+   });
+   jQuery(document).delegate('a.delete-recordparent', 'click', function(e) {
+     e.preventDefault();
+     var didConfirm = confirm("Are you sure You want to delete");
+     if (didConfirm == true) {
+      var id = jQuery(this).attr('data-id');
+      var targetDiv = jQuery(this).attr('targetDiv');
+      jQuery('#recparent-' + id).remove();
+
+    //regnerate index number on table
+    $('#tbl_posts_bodyparent tr').each(function(index) {
+      //alert(index);
+      $(this).find('span.sn').html(index+1);
+    });
+    return true;
+  } else {
+    return false;
+  }
+});
+</script>
+
+<div class="" style="padding-top:0px;">
+    <ol class="breadcrumb" style="background: transparent; font-size:14px; font-weight:700;">
+    <li class="breadcrumb-item"><a href="{% url 'project-home' %}" style="text-decoration:none">Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Admission Form</li>
+  </ol><br>
+
+<div class="container" style="">
+    <div class="card" id="scroll" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+        <div class="card-body" style="border-radius:0;">
+            <h4 class="text-center font-bold pt-1 pb-2 mb-2"><strong>Admission Process</strong></h4><br>
+<!-- Stepper -->
+<div class="steps-form-2">
+    <div class="steps-row-2 setup-panel-2 d-flex justify-content-between">
+        <div class="steps-step-2">
+            <button href="#step-1" type="button" class="btn btn-amber btn-circle-2 waves-effect ml-0" data-toggle="tooltip" data-placement="top" title="Admission Form"><i class="material-icons" aria-hidden="true" width="50px">library_books</i></button>
+        </div>
+        <div class="steps-step-2">
+            <button href="#step-2" type="button" class="btn btn-blue-grey btn-circle-2 waves-effect" data-toggle="tooltip" data-placement="top" title="Payment Form"><i class="material-icons" aria-hidden="true" width="60px"><b>&#8377;</b></i></button>
+        </div>
+        <div class="steps-step-2">
+            <button href="#step-3" type="button" class="btn btn-blue-grey btn-circle-2 waves-effect" data-toggle="tooltip" data-placement="top" title="Student Documents"><i class="material-icons" aria-hidden="true" width="50px">payment</i></button>
+        </div>
+        <div class="steps-step-2">
+            <button href="#step-4" type="button" class="btn btn-blue-grey btn-circle-2 waves-effect mr-0" data-toggle="tooltip" data-placement="top" title="Finish"><i class="material-icons" aria-hidden="true" width="50px">done_all</i></button>
+        </div>
+    </div>
+</div>
+
+<!-- First Step -->
+<form enctype="multipart/form-data" action="submit_admission" method="post" id="admission_form" class="needs-validation">
+    <div class="row setup-content-2" id="step-1">
+        <div class="col-md-12">
+            <br>
+            <span style="font-size:20px;font-weight:700;">Student Details</span><br><br>
+            {% csrf_token %}
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                      <label>Name:</label>&emsp;<label>{{ first_name|title }} {{ last_name|title }}</label> <input type="hidden" name="first_name" value="{{ first_name }}" style="border:none;"/><input style="border:none;" type="hidden" name="last_name" value="{{ last_name }}"/>
+                    </div>
+                    <div class="form-group col-md-3">
+                      <label>Admission Number:</label>&emsp;<label>{{ admission }}</label><input type="hidden" name="admission_number" value="{{ admission }}" style="border:none;"/>
+                        <input type="hidden" name="class1" value="{{ class1 }}" style="border:none;"/>
+                        <input type="hidden" name="class_teacher" value="{{ class_teacher }}" style="border:none;"/>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-2">
+                      <label>Date of birth <span class="asterick">*</span></label><br>
+                      <input type="date" class="form-control form-control-sm" placeholder="" name="student_birthday" id="student_birthday" required>
+                    </div>
+                    <div class="form-group col-md-1">
+                        <label>Gender<span class="asterick">*</span></label><br>
+                        <select name="gender" id="gender" class="form-control form-control-sm">
+                          <option value="Female" name="gender" selected>Female</option>
+                          <option value="Male" name="gender">Male</option>
+                          <option value="Others" name="gender">Others</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>Religion<span class="asterick">*</span></label><br>
+                        <select name="religion" id="religion" class="form-control form-control-sm" onchange="showDiv('hiddden_div', this)">
+                          {% for religion in lookup_religion %}
+                          <option value={{ religion.lookup_inputvalue }} name="religion">{{ religion.lookup_inputvalue |title }}</option>
+                          {% endfor %}
+                          <option value="others" name="religion">Others</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-1">
+                          <label>Caste<span class="asterick">*</span></label><br>
+                          <select name="caste" id="caste" class="form-control form-control-sm">
+                          <option value="general" name="caste" value="GENERAL"selected>General</option>
+                          <option value="obc" name="caste" value="OBC">OBC</option>
+                          <option value="sc" name="caste" value="SC">SC</option>
+                          <option value="st" name="caste" value="ST">ST</option>
+                          </select>
+                    </div>
+                    <div class="form-group col-md-2">
+                      <label>Language<span class="asterick">*</span></label>
+                      <input type="text" class="form-control form-control-sm" placeholder="Languages" name="language" id="language">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>Blood Group<span class="asterick">*</span></label><br>
+                          <select name="blood_group" id="blood_group" class="form-control form-control-sm">
+                          <option name="blood_group" value="A+" selected>A+</option>
+                          <option name="blood_group" value="B+">B+</option>
+                          <option name="blood_group" value="O+">O+</option>
+                          <option name="blood_group" value="AB+">AB+</option>
+                          <option name="blood_group" value="A-">A-</option>
+                          <option name="blood_group" value="B-">B-</option>
+                          <option name="blood_group" value="O-">O-</option>
+                          <option name="blood_group" value="AB-">AB-</option>
+                          </select>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>Food Preference<span class="asterick">*</span></label><br>
+                        <select name="food_preference" id="food_preference" class="form-control form-control-sm">
+                        <option value="Vegetarian" name="food_preference" selected>Vegetarian</option>
+                        <option value="Non-Vegetarian" name="food_preference">Non-Vegetarian</option>
+                        </select>
+                    </div>
+                </div>
+                <hr>
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                      <label>Nature of Disability</label>
+                      <input type="text" class="form-control form-control-sm" placeholder="Nature of Disability" name="disability" id="disability" required value="{{ disability|title}}">
+                    </div>
+                    <div class="form-group col-md-3" style="margin-left:5px;">
+                      <label>Percentage of Disability (in %)</label>
+                      <input type="number" class="form-control form-control-sm" placeholder="Percentage of Disability" name="disability_percentage" id="disability_percentage">
+                    </div>
+                    <div class="form-group col-md-5" style="margin-left:5px;">
+                      <label>Identification Mark</label>
+                      <input type="text" class="form-control form-control-sm" placeholder="Identification Mark" name="identification_mark" id="identification_mark">
+                    </div>
+                </div>
+                <hr>
+                <div class="form-row">
+                    <span>Parent Details</span>
+
+                <div>
+
+                <table cellpadding="5" style="width:1005px;" id="tbl_postsparent" class="tbl_postsparent"><tbody id="tbl_posts_bodyparent">
+                    <tr id="recparent-1"><div class="form-group col-md-2">
+                    <td><select class="form-control form-control-sm" style="width:100%;" name="relationType"><option name="father" value="FATHER">Father</option>
+                    <option name="mother" value="MOTHER">Mother</option>
+                    <option name="guardian" value="GUARDIAN">Guardian</option>
+                    </select></td></div>
+                    <td>
+                    <div>
+                        <input type="text" class="form-control form-control-sm" placeholder="Full name" name="parent_name" id="parent_name">
+                    </div>
+                    </td>
+                    <td>
+                        <div>
+                        <input type="text" class="form-control form-control-sm" placeholder="Occupation" name="occupation" id="occupation">
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                        <input type="number" class="form-control form-control-sm" placeholder="Contact Number" name="contact" id="contact">
+                        </div>
+                    </td>
+                    <td>
+                        <input type="email" class="form-control form-control-sm" placeholder="Email Id" name="email_id" id="email_id">
+                        <script type="text/javascript">
+                            var email = $('#email_id').val();
+                            var indexat = email.indexOf("@"); //Index of "@" in the email field
+                            var indexdot = email.indexOf("."); //Index of "." in the email field
+                            $('#email_id').change(function() {
+                                //Validation of valid email address. The function will generate an alert message if "email" field is blank or incorrect
+                                else if(indexat < 1 || (indexdot-indexat) < 2)
+                                {
+	                                    alert('Please enter a valid Email Id');
+	                                    $('#email_id').focus();
+                                }
+                             });
+
+                        </script>
+                    </td>
+                    <th>
+                        <div class="well clearfix">
+                        <a class="btn btn-info btn-sm pull-left add-recordparent waves-light" data-added="0" >
+                            <b><font size="2px">+</font></b>
+                        </a>
+                        </div>
+                    </th>
+                    </tr>
+                </table>
+                </div>
+                <div style="display:none;">
+                    <table id="sample_tableparent">
+                        <tr>
+                            <td>
+                                <select class="form-control form-control-sm" style="width:100%;" name="relationType">
+                                    <option name="father" value="FATHER">Father</option>
+                                    <option name="mother" value="MOTHER">Mother</option>
+                                    <option name="guardian" value="GUARDIAN">Guardian</option>
+                                </select>
+                            </td>
+                            <td>
+                                <div>
+                                    <input type="text" class="form-control form-control-sm" placeholder="Full name" name="parent_name" id="parent_name">
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <input type="text" class="form-control form-control-sm" placeholder="Occupation" name="occupation" id="occupation">
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <input type="number" class="form-control form-control-sm" placeholder="Contact Number" name="contact" id="contact">
+                                </div>
+
+                            </td>
+                            <td>
+                                <input type="email" class="form-control form-control-sm" placeholder="Email Id" name="email_id" id="email_id">
+                            </td>
+                            <th>
+                                <div class="well clearfix">
+                                    <a class="btn btn-info btn-sm pull-left delete-recordparent waves-light" data-id="0" ><b><font size="2px">-</font></b>
+                                    </a>
+                                </div>
+                            </th>
+                        </tr>
+                    </table>
+                </div>
+                </div>
+                <hr>
+                <div class="form-row">
+                    <span>Sibling Details</span>
+                </div>
+                <div>
+                    <table cellpadding="5" style="width:1005px;margin-left:0px;" id="tbl_postssib">
+                        <tbody id="tbl_posts_bodysib" class="tbl_posts_bodysib">
+                                <tr id="recsib-1">
+                                <td>
+                                    <div>
+                                        <input type="text" class="form-control form-control-sm" placeholder="Full name" name="sibling_name1" id="sibling_name1">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <input type="number" class="form-control form-control-sm" placeholder="Age" name="sibling_age1" id="sibling_age1">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <input type="text" class="form-control form-control-sm" placeholder="Occupation" name="sibling_occupation1" id="sibling_occupation1">
+                                    </div>
+                                </td>
+
+                                <th>
+                                     <a class="btn btn-sm btn-info pull-left add-recordsib" data-added="0"><b><font size="2px">+</font></b></a>
+                                </th>
+                                </tr>
+	                    </tbody>
+                    </table>
+                </div>
+                <div style="display:none;">
+                    <table id="sample_tablesib">
+                        <tr id="">
+                                <td>
+                                    <div>
+                                        <input type="text" class="form-control form-control-sm" placeholder="Full name" name="sibling_name1" id="sibling_name1">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <input type="number" class="form-control form-control-sm" placeholder="Age" name="sibling_age1" id="sibling_age1">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <input type="text" class="form-control form-control-sm" placeholder="Occupation" name="sibling_occupation1" id="sibling_occupation1">
+                                    </div>
+                                </td>
+
+                                <th>
+                                    <div class="well clearfix">
+                                    <a class="btn btn-info btn-sm pull-left delete-recordsib waves-light" data-id="0" ><b><font size="2px">-</font></b></a>
+                                    </div>
+                                </th>
+                        </tr>
+                    </table>
+                </div>
+                <hr>
+                 <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label for="address">Address</label>
+                        <textarea id="address" class="md-textarea form-control" rows="1" name="address"></textarea>
+                    </div>
+                 </div>
+                 <hr>
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                      <label>Last Institution Attended</label>
+                      <input type="text" class="form-control form-control-sm" placeholder="Last Institution Attended" name="last_attended_institute_name" id="last_attended_institute_name">
+                    </div>
+                    <div class="form-group col-md-5" style="margin-left:5px;margin-right:5px;">
+                      <label>Reason for leaving</label>
+                      <input type="text" class="form-control form-control-sm" placeholder="Reason for leaving" name="reason_for_leaving" id="reason_for_leaving">
+                    </div>
+                    <div class="form-group col-md-3">
+                      <label>Referred By</label>
+                      <input type="text" class="form-control form-control-sm" placeholder="Referred By" name="referred_by" id="referred_by">
+                    </div>
+                </div>
+        </div>
+    </div>
+
+<!-- Second Step -->
+    <div class="row setup-content-2" id="step-2">
+        <div class="col-md-12">
+            <br>
+            <span style="font-size:20px;font-weight:700;">Payment Details</span><br><br>
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="form-group col-md-1"></div>
+                <div class="form-group col-md-4">
+                     <label>Admission No: &emsp;</label><label> {{ admission}}</label>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-1"></div>
+                <div class="form-group col-md-4">
+                    <input type="number" class="form-control form-control-sm" placeholder="Admission Fees (One-time) set*" name="admfee" id="admfee" required>
+                </div>
+                <div class="form-group col-md-1"></div>
+                <div class="form-group col-md-4">
+                    <input type="number" class="form-control form-control-sm" placeholder="Admission Fees Paid" name="admfeepaid" id="admfeepaid">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-1"></div>
+                <div class="form-group col-md-4">
+                    <input type="number" class="form-control form-control-sm" placeholder="Monthly School Fees set*" name="monFee" id="monFee" required>
+                </div>
+                <div class="form-group col-md-1"></div>
+                <div class="form-group col-md-4">
+                    <input type="number" class="form-control form-control-sm" placeholder="Uniform Fees set*" name="unifee" id="unifee" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-1"></div>
+                <div class="form-group col-md-4">
+                    <input type="number" class="form-control form-control-sm" placeholder="Uniform Fee Paid" name="uniFeePaid" id="uniFeePaid">
+                </div>
+            </div>
+
+        </div></div>
+    <!-- Third Step -->
+    <div class="row setup-content-2" id="step-3">
+        <div class="">
+            <br>
+            <span style="font-size:20px;font-weight:700;">Required Documents</span>
+            <table>
+                <tr>
+                    <div class="col-md-3">
+                         <td>Upload Assessment Sheet</td>
+                         <td><input type="file" class="" name="assessment_sheet" id="assessment_sheet"></td>
+                             <script>
+                                var uploadField = document.getElementById("assessment_sheet");
+                                uploadField.onchange = function() {
+                                if(this.files[0].size > 204800){
+                                   alert("File is too big! Size should be less than 200KB");
+                                   this.value = "";
+                                };
+                                };
+                             </script>
+                      </div>
+                    <td><div class="col-md-2"></div></td>
+
+                      <div class="col-md-3">
+                         <td>Student photograph</td>
+                         <td><input type="file" class="" name="student_pic" id="student_pic"></td>
+                             <script>
+                                 var uploadField = document.getElementById("student_pic");
+                                 uploadField.onchange = function() {
+                                 if(this.files[0].size > 256000){
+                                     alert("File is too big! Size should be less than 250KB");
+                                     this.value = "";
+                                 };
+                                 };
+                             </script>
+                      </div>
+                   </td>
+                   </div>
+                </tr>
+                 <tr>
+                    <div class="col-md-3">
+                         <td>Student Adhaar Card</td>
+                         <td><input type="file" class="" name="adhaar_card_student" id="adhaar_card_student"></td>
+                             <script>
+                                var uploadField = document.getElementById("adhaar_card_student");
+                                uploadField.onchange = function() {
+                                if(this.files[0].size > 204800){
+                                   alert("File is too big! Size should be less than 200KB");
+                                   this.value = "";
+                                };
+                                };
+                             </script>
+                      </div>
+                    <td><div class="col-md-2"></div></td>
+                      <div class="col-md-3">
+                         <td>Guardian Adhaar Card</td>
+                         <td><input type="file" class="" name="adhaar_card_guardian" id="adhaar_card_guardian"></td>
+                             <script>
+                                 var uploadField = document.getElementById("adhaar_card_guardian");
+                                 uploadField.onchange = function() {
+                                 if(this.files[0].size > 204800){
+                                     alert("File is too big! Size should be less than 200KB");
+                                     this.value = "";
+                                 };
+                                 };
+                             </script>
+                      </div>
+                   </td>
+                </tr>
+                 <tr>
+                    <div class="col-md-3">
+                         <td>Student Disability Card</td>
+                         <td><input type="file" class="" name="student_disability_card" id="student_disability_card"></td>
+                             <script>
+                                var uploadField = document.getElementById("student_disability_card");
+                                uploadField.onchange = function() {
+                                if(this.files[0].size > 204800){
+                                   alert("File is too big! Size should be less than 200KB");
+                                   this.value = "";
+                                };
+                                };
+                             </script>
+                      </div>
+                    <td><div class="col-md-2"></div></td>
+                      <div class="form-group col-md-3">
+                         <td>Student Birth Certificate</td>
+                         <td><input type="file" class="" name="student_birth_certificate" id="student_birth_certificate"></td>
+                             <script>
+                                 var uploadField = document.getElementById("student_birth_certificate");
+                                 uploadField.onchange = function() {
+                                 if(this.files[0].size > 204800){
+                                     alert("File is too big! Size should be less than 200KB");
+                                     this.value = "";
+                                 };
+                                 };
+                             </script>
+                      </div>
+                   </td>
+                </tr>
+                 <tr>
+                    <div class="col-md-3">
+                         <td>Student Niramaya Card</td>
+                         <td><input type="file" class="" name="student_Niramaya_card" id="student_Niramaya_card"></td>
+                             <script>
+                                var uploadField = document.getElementById("student_Niramaya_card");
+                                uploadField.onchange = function() {
+                                if(this.files[0].size > 204800){
+                                   alert("File is too big! Size should be less than 200KB");
+                                   this.value = "";
+                                };
+                                };
+                             </script>
+                      </div>
+                    <td><div class="col-md-2"></div></td>
+                      <div class="col-md-3">
+                         <td>Student Caste Certificate</td>
+                         <td><input type="file" class="" name="student_caste_certificate" id="student_caste_certificate"></td>
+                             <script>
+                                 var uploadField = document.getElementById("student_caste_certificate");
+                                 uploadField.onchange = function() {
+                                 if(this.files[0].size > 204800){
+                                     alert("File is too big! Size should be less than 200KB");
+                                     this.value = "";
+                                 };
+                                 };
+                             </script>
+                      </div>
+                   </td>
+                </tr>
+            </table>
+            <!--<button class="btn btn-mdb-color btn-rounded prevBtn-2 float-left" type="button">Previous</button>
+            <button class="btn btn-mdb-color btn-rounded nextBtn-2 float-right" type="button">Next</button>-->
+
+        </div>
+    </div>
+
+    <!-- Fourth Step -->
+    <div class="row setup-content-2" id="step-4">
+        <div class="col-md-12">
+            <br>
+            <span style="font-size:20px;font-weight:700;">Declaration</span><br><br>
+
+            <p>
+              I &emsp;<input type="text" placeholder="Guardian Name">&emsp; Father/Mother/Guardian of &emsp;<input type="text" placeholder="Student Name">&emsp; in good faith have this day had me WARD/Son/Daughter, admitted at WARDS, and the said member of WARDS, also in good faith have accepted my ward for education/training as per the programme. I hereby undertaken that should there take place any untoward incident that may prove to be detrimental, harmful or otherwise to my wards wither during the course of his/her education/training or after working hours of WARDS. I/We shall not hold the institution or any of its members, directly or indirectly responsible for in view of my child/ward being disabled.
+            </p>
+            <input type="checkbox"  onchange="document.getElementById('formsubmit').disabled = !this.checked;" />&emsp;Agree<br><br>
+             <div class="form-row">
+                <div class="form-group col-md-2">
+                    <label>Date of Joining</label>
+                    <input type="date" class="form-control form-control-sm" placeholder="Date of Joining*" name="doj" id="doj" required>
+                </div>
+             </div>
+
+            <!--<button class="btn btn-mdb-color btn-rounded prevBtn-2 float-left" type="button">Previous</button> -->
+            <button class="btn btn-primary float-right" type="submit" id="formsubmit">Submit</button>
+        </div>
+    </div>
+</form>
+        </div>
+    </div>
+</div>
+</div>
+<script>
+   $('#admission_form').submit(function () {
+
+      $('.tbl_postsparent').each(function(){
+          var menu_entry = ""
+
+          $(this).find('.form-control').each(function(){
+              menu_entry = menu_entry + this.value + ","
+          })
+
+          $('#admission_form').append('<input type="hidden" name="menu_entries" value="'+ menu_entry +'" />')
+
+
+      })
+      $('.tbl_posts_bodysib').each(function(){
+          var menu_entry_sib = ""
+
+          $(this).find('.form-control').each(function(){
+              menu_entry_sib = menu_entry_sib + this.value + ","
+          })
+
+          $('#admission_form').append('<input type="hidden" name="menu_entries_sib" value="'+ menu_entry_sib +'" />')
+
+
+      })
+  })
+</script>
+<script>
+// Tooltips Initialization
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+
+// Steppers
+$(document).ready(function () {
+  var navListItems = $('div.setup-panel-2 div button'),
+          allWells = $('.setup-content-2'),
+          allNextBtn = $('.nextBtn-2'),
+          allPrevBtn = $('.prevBtn-2');
+
+  allWells.hide();
+
+  navListItems.click(function (e) {
+      e.preventDefault();
+      var $target = $($(this).attr('href')),
+              $item = $(this);
+
+      if (!$item.hasClass('disabled')) {
+          navListItems.removeClass('btn-amber').addClass('btn-blue-grey');
+          $item.addClass('btn-amber');
+          allWells.hide();
+          $target.show();
+          $target.find('input:eq(0)').focus();
+      }
+  });
+
+  allPrevBtn.click(function(){
+      var curStep = $(this).closest(".setup-content-2"),
+          curStepBtn = curStep.attr("id"),
+          prevStepSteps = $('div.setup-panel-2 div a[href="#' + curStepBtn + '"]').parent().prev().children("a");
+
+          prevStepSteps.removeAttr('disabled').trigger('click');
+  });
+
+  allNextBtn.click(function(){
+      var curStep = $(this).closest(".setup-content-2"),
+          curStepBtn = curStep.attr("id"),
+          nextStepSteps = $('div.setup-panel-2 div button[href="#' + curStepBtn + '"]').parent().next().children("a"),
+          curInputs = curStep.find("input[type='text'],input[type='url']"),
+          isValid = true;
+
+      $(".form-group").removeClass("has-error");
+      for(var i=0; i< curInputs.length; i++){
+          if (!curInputs[i].validity.valid){
+              isValid = false;
+              $(curInputs[i]).closest(".form-group").addClass("has-error");
+          }
+      }
+
+      if (isValid)
+          nextStepSteps.removeAttr('disabled').trigger('click');
+  });
+
+  $('div.setup-panel-2 div button.btn-amber').trigger('click');
+});
+</script>
+ <script type="text/javascript" src="static/js/jquery-3.4.1.min.js"></script>
+  <!-- Bootstrap tooltips -->
+  <script type="text/javascript" src="static/js/popper.min.js"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src="static/js/bootstrap.min.js"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="static/js/mdb.min.js"></script>
+{% endif %}
+{% endblock content %}

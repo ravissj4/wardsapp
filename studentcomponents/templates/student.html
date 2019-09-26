@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Details</title>
+</head>
+<style>
+    td{text-align:center;
+    font-size: 12px;
+    }
+    th{
+      font-size: 14px;
+      }
+</style>
+<body>
+<p style="text-align:center"> <img src="../media/wards-logo.png"> </p>
+
+<h3 style="text-align:center;font-size: 18px;">Student Details Report</h3>
+<p style="font-size:15px;"><b>Date</b>: {% now "jS F Y" %}</p>
+
+
+<table border="1" cellpadding="5">
+                <tr align="center">
+						<th style="width:10%">Adm. No.</th>
+						<th style="width:20%">Name</th>
+						<th style="width:15%">
+                            Date of Birth
+                        </th>
+                        <th style="width:10%">
+                            Age(yrs.)
+                        </th>
+                        <th style="width:15%">
+                            Date of Join
+                        </th>
+                        <th style="width:25%">
+                            Nature of Disability
+                        </th>
+						<th style="width:10%">
+							Caste
+						</th>
+                </tr>
+{% for i in student %}
+    <tr align="center">
+     <td>{{ i.admission_number }}</td>
+                        <td>{{ i.first_name|title }} {{i.last_name|title}}</td>
+                        <td>{{ i.student_birthday }}</td>
+                        <td>{{ i.age }}</td>
+                        <td>{{ i.date_of_join }}</td>
+                        <td>{{ i.disability|title }}</td>
+						<td>{{ i.caste|title }}</td>
+    </tr>
+{% endfor %}
+</table>
+
+
+
+</body>
+</html>
+
+

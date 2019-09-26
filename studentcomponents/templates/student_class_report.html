@@ -1,0 +1,76 @@
+{% extends "page1/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% if user.is_authenticated %}
+<style>
+.style-table > thead > tr >th{
+    color: #FFFFFF;
+    background-color: black;
+    }
+</style>
+<div class="" style="padding-top:0px;">
+    <ol class="breadcrumb" style="background: transparent; font-size:14px; font-weight:700;">
+    <li class="breadcrumb-item"><a href="{% url 'project-home' %}" style="text-decoration:none">Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Student Class-wise Report</li>
+  </ol><br>
+    <div class="container" style="border-radius:5px;">
+        <div class="card" style="border-radius:5px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+            <div class="card-body" style="padding: 25px;">
+        <div class="form-row" style="padding:10px;text-align:center;">
+            <span style="font-size:20px;">Select Class Name : </span>&emsp;
+            <div style="position:relative;">
+               <form action="/classreport" method="post">
+                  {% csrf_token %}
+                  <select name="student_class_assigned" id="student_class_assigned" onchange="this.form.submit();" style="border:none;-webkit-appearance: menulist;width:100%;margin-top:7px;">
+                      <option>Class Name</option>
+                     {% for i in student_class %}
+                        <option value={{ i }} name="student_class_assigned">{{ i }}</option>
+                           {% endfor %}
+                  </select>
+               </form>
+            </div>
+        </div>
+
+        {% if class_type == "class_type" %}
+            <div class="form-row" style="padding:5px;">
+                <div>Class Name : {{ student_class_assigned }}</div>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                <div style="">{% for i in student_teacher %}Teacher Name : {{ i|title }}&emsp;{% endfor %}</div>
+
+            </div><br>
+            <div style="overflow:auto;">
+            <table id="dtBasicExample" class="table table-bordered table-hover table-sm style-table" cellspacing="20" style="background-color:#FFFFFF;">
+                <thead>
+                    <tr>
+                        <th>
+                            Admission No.
+                        </th>
+                        <th>
+                            Student Name
+                        </th>
+                        <th>
+                            Date of Birth
+                        </th>
+                        <th>
+                            Age
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in student_details %}
+                    <tr>
+                        <td>{{ i.admission_number }}</td>
+                        <td>{{ i.first_name|title }} {{i.last_name|title}}</td>
+                        <td>{{ i.student_birthday }}</td>
+                        <td>{{ i.age }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            </div>
+        {% endif %}
+        </div>
+    </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

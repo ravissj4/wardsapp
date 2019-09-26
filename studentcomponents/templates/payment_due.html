@@ -1,0 +1,554 @@
+{% extends "page1/base.html" %}
+{% load crispy_forms_tags %}
+{% load customtags %}
+{% block content %}
+{% if user.is_authenticated %}
+<style>
+    .style-table > thead > tr >th{
+    color: #FFFFFF;
+    background-color: black;
+    }
+
+    	@media only screen and (max-width: 600px){
+    	.date-row{
+    	margin-top: -50px;
+
+    	}
+    	.row-btn{
+    	    display: none;
+    	}
+
+	}
+	@media only screen and (min-width: 900px){
+		#payment{
+			margin-left:0px;
+		}
+		.date-st{
+		    margin-top:0px;
+		    margin-left:0;
+		}
+		.date-label{
+		    margin-left: -50px;margin-right:-40px;margin-top:5px;
+		}
+		.date-label2{
+		    margin-left: -90px;margin-right:-50px;margin-top:5px;
+		}
+
+		#opt{
+
+		    margin-top:0px;
+		}
+	}
+
+	    input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.autocomplete {
+  position: relative;
+  display: inline-block;
+}
+
+.autocomplete-items div {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #fff;
+  border-bottom: 1px solid #d4d4d4;
+}
+
+
+.autocomplete-items div:hover {
+  background-color: #e9e9e9;
+}
+
+.autocomplete-active {
+  background-color: DodgerBlue !important;
+  color: #ffffff;
+}
+</style>
+
+<script>
+   $(document).ready(function(){
+  $(".btn1").click(function(){
+    $("table").hide();
+  });
+  $(".btn2").click(function(){
+    $("p").show();
+  });
+});
+
+$(function () {
+    var dataSrc = [101, "austria", "antartica", "argentina", "algeria"];
+
+    $("#myText").autocomplete({
+        source:dataSrc
+    });
+});
+</script>
+
+<script>
+function autocomplete(inp, arr) {
+
+  var currentFocus;
+
+  inp.addEventListener("input", function(e) {
+      var a, b, i, val = this.value;
+      closeAllLists();
+      if (!val) { return false;}
+      currentFocus = -1;
+      a = document.createElement("DIV");
+      a.setAttribute("id", this.id + "autocomplete-list");
+      a.setAttribute("class", "autocomplete-items");
+      /*append the DIV element as a child of the autocomplete container:*/
+      this.parentNode.appendChild(a);
+      /*for each item in the array...*/
+      for (i = 0; i < arr.length; i++) {
+        /*check if the item starts with the same letters as the text field value:*/
+        if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+          /*create a DIV element for each matching element:*/
+          b = document.createElement("DIV");
+          /*make the matching letters bold:*/
+          b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+          b.innerHTML += arr[i].substr(val.length);
+          /*insert a input field that will hold the current array item's value:*/
+          b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+          /*execute a function when someone clicks on the item value (DIV element):*/
+          b.addEventListener("click", function(e) {
+              /*insert the value for the autocomplete text field:*/
+              inp.value = this.getElementsByTagName("input")[0].value;
+              /*close the list of autocompleted values,
+              (or any other open lists of autocompleted values:*/
+              closeAllLists();
+          });
+          a.appendChild(b);
+        }
+      }
+  });
+  /*execute a function presses a key on the keyboard:*/
+  inp.addEventListener("keydown", function(e) {
+      var x = document.getElementById(this.id + "autocomplete-list");
+      if (x) x = x.getElementsByTagName("div");
+      if (e.keyCode == 40) {
+        /*If the arrow DOWN key is pressed,
+        increase the currentFocus variable:*/
+        currentFocus++;
+        /*and and make the current item more visible:*/
+        addActive(x);
+      } else if (e.keyCode == 38) { //up
+        /*If the arrow UP key is pressed,
+        decrease the currentFocus variable:*/
+        currentFocus--;
+        /*and and make the current item more visible:*/
+        addActive(x);
+      } else if (e.keyCode == 13) {
+        /*If the ENTER key is pressed, prevent the form from being submitted,*/
+        e.preventDefault();
+        if (currentFocus > -1) {
+          /*and simulate a click on the "active" item:*/
+          if (x) x[currentFocus].click();
+        }
+      }
+  });
+  function addActive(x) {
+    /*a function to classify an item as "active":*/
+    if (!x) return false;
+    /*start by removing the "active" class on all items:*/
+    removeActive(x);
+    if (currentFocus >= x.length) currentFocus = 0;
+    if (currentFocus < 0) currentFocus = (x.length - 1);
+    /*add class "autocomplete-active":*/
+    x[currentFocus].classList.add("autocomplete-active");
+  }
+  function removeActive(x) {
+    /*a function to remove the "active" class from all autocomplete items:*/
+    for (var i = 0; i < x.length; i++) {
+      x[i].classList.remove("autocomplete-active");
+    }
+  }
+  function closeAllLists(elmnt) {
+    /*close all autocomplete lists in the document,
+    except the one passed as an argument:*/
+    var x = document.getElementsByClassName("autocomplete-items");
+    for (var i = 0; i < x.length; i++) {
+      if (elmnt != x[i] && elmnt != inp) {
+        x[i].parentNode.removeChild(x[i]);
+      }
+    }
+  }
+  /*execute a function when someone clicks in the document:*/
+  document.addEventListener("click", function (e) {
+      closeAllLists(e.target);
+  });
+}
+
+
+var countries = ["Afghanistan","Albania","Algeria","Andorra","Angola","Anguilla","Antigua & Barbuda","Argentina","Armenia","Aruba","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia & Herzegovina","Botswana","Brazil","British Virgin Islands","Brunei","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Canada","Cape Verde","Cayman Islands","Central Arfrican Republic","Chad","Chile","China","Colombia","Congo","Cook Islands","Costa Rica","Cote D Ivoire","Croatia","Cuba","Curacao","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Ethiopia","Falkland Islands","Faroe Islands","Fiji","Finland","France","French Polynesia","French West Indies","Gabon","Gambia","Georgia","Germany","Ghana","Gibraltar","Greece","Greenland","Grenada","Guam","Guatemala","Guernsey","Guinea","Guinea Bissau","Guyana","Haiti","Honduras","Hong Kong","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Isle of Man","Israel","Italy","Jamaica","Japan","Jersey","Jordan","Kazakhstan","Kenya","Kiribati","Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Macau","Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Montserrat","Morocco","Mozambique","Myanmar","Namibia","Nauro","Nepal","Netherlands","Netherlands Antilles","New Caledonia","New Zealand","Nicaragua","Niger","Nigeria","North Korea","Norway","Oman","Pakistan","Palau","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Puerto Rico","Qatar","Reunion","Romania","Russia","Rwanda","Saint Pierre & Miquelon","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Korea","South Sudan","Spain","Sri Lanka","St Kitts & Nevis","St Lucia","St Vincent","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor L'Este","Togo","Tonga","Trinidad & Tobago","Tunisia","Turkey","Turkmenistan","Turks & Caicos","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States of America","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Virgin Islands (US)","Yemen","Zambia","Zimbabwe"];
+
+autocomplete(document.getElementById("myText"), countries);
+</script>
+
+
+<div class="" style="padding-top:0px;">
+    <ol class="breadcrumb" style="background: transparent; font-size:14px; font-weight:700;">
+    <li class="breadcrumb-item"><a href="{% url 'project-home' %}" style="text-decoration:none">Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Payment Due</li>
+  </ol><br>
+    <div class="container" style="border-radius:0px;">
+        <div class="card" style="border-radius:5px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+            <div class="card-body" style="padding:25px;">
+                <div class="" style="">
+                        <form autocomplete="off" action="/payment_due_view" method="POST">
+                            {% csrf_token %}
+                            <div class="form-row">
+                            <div class="form-group col-md-3" id="opt">
+                            <span style="font-size:20px;font-weight:700;">Select Admission Number: </span>
+                            </div>
+                                    <div class="form-group col-md-2 autocomplete">
+                                        <input type="text" id="myText" class="form-control form-control-sm" placeholder="Admission Number" name="student_admissionno"><br>
+                                    </div>&emsp;
+                            </div>
+                            <div class="form-row date-row">
+                                  <div class="form-group col-md-3" id="opt">
+                                    <span style="font-size:20px;font-weight:700;">Select Date Range : </span>
+                                  </div>
+                                  <div class="form-group col-md-1 date-label">From:</div>
+                                  <div class="form-group col-md-2 date-st">
+                                    <input class="form-control form-control-sm" type="date" name="from_date">
+                                  </div>
+                                  <div class="form-group col-md-1 date-st"></div>
+                                  <div class="form-group col-md-1 date-label2">To:</div>
+                                  <div class="form-group col-md-2 date-st">
+                                     <input class="form-control form-control-sm" type="date" name="to_date">
+                                  </div>&emsp;
+                                  <select name="type_of_payment" id="type_of_payment" class="form-control form-control-sm" onchange="this.form.submit();">
+                                    <option selected disabled><span class="th-sm" style="">Select Payment Type</span> </option>
+                                  {% for i in lookup_ptype %}
+                                  <option value={{ i.lookup_inputvalue }} name="type_of_payment">{{ i.lookup_inputvalue |title }}</option>
+                                  {% endfor %}
+                                </select>
+                            </div>
+                            
+                        </form>
+                </div>
+{% if type_of_payment == "ADMISSION" %}
+            <h4 style="font-size:20px;">Admission Fee</h4><br>
+        <div style="overflow:auto;">
+        <table id="dtBasicExample" class="table table-bordered table-hover table-sm style-table" id="hide" cellspacing="20" style="background-color:#FFFFFF;">
+            <thead>
+                <tr>
+                    <th>
+                        Admission No.
+                    </th>
+                    <th>
+                        Student Name
+                    </th>
+                    <th>
+                        Admission fee set
+                    </th>
+                    <th>
+                        Total fee paid
+                    </th>
+                    <th>
+                        Fee Details
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in fee_set %}
+                <tr>
+                    <td>{{ i.student.admission_number }}</td>
+                    <td>{{ i.student.first_name|title }} {{ i.student.last_name|title }}</td>
+                    <td>{{ i.admission_fees_set }}</td>
+                    <td>
+                        {{ payment_paid_total }}
+                    </td>
+                    <td>
+                        <ul style="margin: 0;padding: 0;list-style:none;">
+                        {% for j in payment_paid %}
+                            {% if i == j.payment %}
+                            <span data-toggle="tooltip" data-placement="right" title="Date of payment : {{ j.fees_paid_date }}">
+                                {{ j.fees_paid }}
+                            </span>
+                            {% endif %}
+                        {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+{% endif %}
+
+{% if type_of_payment == "UNIFORM" %}
+            <h4 style="font-size:20px;">Uniform Fee</h4><br>
+        <div style="overflow:auto;">
+        <table id="dtBasicExample1" class="table table-bordered table-hover table-sm style-table" cellspacing="20" style="background-color:#FFFFFF;">
+            <thead>
+                <tr>
+                    <th>
+                        Admission Number
+                    </th>
+                    <th>
+                        Student Name
+                    </th>
+                    <th>
+                        Uniform fee set
+                    </th>
+                    <th>
+                        Total fee paid
+                    </th>
+                    <th>
+                        Fee Details
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in fee_set %}
+                <tr>
+                    <td>{{ i.student.admission_number }}</td>
+                    <td>{{ i.student.first_name|title }} {{ i.student.last_name|title }}</td>
+                    <td>{{ i.uniform_fees_set }}</td>
+                    <td>
+                        {{payment_paid_total}}
+                    </td>
+                    <td>
+                        <ul style="margin: 0;padding: 0;list-style:none;">
+                        {% for j in payment_paid %}
+                            {% if i == j.payment %}
+                            <span data-toggle="tooltip" data-placement="right" title="Date of payment : {{ j.fees_paid_date }}">
+                                {{ j.fees_paid }}
+
+                            </span>&emsp;
+                            {% endif %}
+                        {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+{% endif %}
+
+{% if type_of_payment == "MONTHLY" %}
+        <h4 style="font-size:20px;">Monthly Fee</h4><br>
+        <div style="overflow:auto;">
+        <table border="10px" id="dtBasicExample1" class="table table-bordered table-hover table-sm style-table" cellspacing="20" style="background-color:#FFFFFF;border:5px;">
+            <thead style="background:black;">
+                <tr>
+                    <th class="th-sm" style="color:#FFFFFF;">
+                        Adm. No.
+                    </th>
+                    <th class="th-sm" style="color:#FFFFFF;">
+                        Student Name
+                    </th>
+                    <th class="th-sm" style="color:#FFFFFF;">
+                        Fee Set
+                    </th>
+                    <th class="th-sm" style="color:#FFFFFF;">
+                        Total Paid
+                    </th>
+                    <th class="th-sm" style="color:#FFFFFF;">
+                        January
+                    </th>
+                    <th class="th-sm" style="color:#FFFFFF;">
+                        February
+                    </th>
+                    <th class="th-sm" style="color:#FFFFFF;">
+                        March&emsp;
+                    </th>
+                    <th class="th-sm" style="color:#FFFFFF;">
+                        April&emsp;&emsp;
+                    </th>
+                    <th class="th-sm" style="color:#FFFFFF;">
+                        May&emsp;&emsp;
+                    </th>
+                    <th class="th-sm" style="color:#FFFFFF;">
+                        June&emsp;&emsp;
+                    </th>
+                    <th class="th-sm" style="color:#FFFFFF;">
+                        July&emsp;&emsp;
+                    </th>
+                    <th class="th-sm" style="color:#FFFFFF;">
+                        August&emsp;
+                    </th>
+                    <th class="th-sm" style="color:#FFFFFF;">
+                        September
+                    </th>
+                    <th class="th-sm" style="color:#FFFFFF;">
+                        October
+                    </th>
+                    <th class="th-sm" style="color:#FFFFFF;">
+                        November
+                    </th>
+                    <th class="th-sm" style="color:#FFFFFF;">
+                        December
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in fee_set %}
+                <tr>
+                    <td>{{ i.student.admission_number }}</td>
+                    <td>{{ i.student.first_name|title }} {{ i.student.last_name|title }}</td>
+                    <td>{{ i.monthly_fees_set }}</td>
+                    <td>{{ payment_paid_total }}</td>
+                    <td><ul style="margin: 0;padding: 0;list-style:none;">
+                        {% for j in payment_paid %}
+                            {% if i == j.payment %}
+                                {% if j.fees_paid_date|date:'F' == "January" %}
+                        &emsp;<span data-toggle="tooltip" data-placement="right" title="Date of payment : {{ j.fees_paid_date }}">
+                                    {{ j.fees_paid }}
+                                {% endif %}
+                            </span>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                    </td>
+                    <td><ul style="margin: 0;padding: 0;list-style:none;">
+                        {% for j in payment_paid %}
+                            {% if i == j.payment %}
+                                {% if j.fees_paid_date|date:'F' == "February" %}
+                        &emsp;<span data-toggle="tooltip" data-placement="right" title="Date of payment : {{ j.fees_paid_date }}">
+                                    {{ j.fees_paid }}
+                            </span>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                    </td>
+                    <td><ul style="margin: 0;padding: 0;list-style:none;">
+                        {% for j in payment_paid %}
+                            {% if i == j.payment %}
+                                {% if j.fees_paid_date|date:'F' == "March" %}
+                        &emsp;<span data-toggle="tooltip" data-placement="right" title="Date of payment : {{ j.fees_paid_date }}">
+                                    {{ j.fees_paid }}
+                            </span>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                    </td>
+                    <td><ul style="margin: 0;padding: 0;list-style:none;">
+                        {% for j in payment_paid %}
+                            {% if i == j.payment %}
+                                {% if j.fees_paid_date|date:'F' == "April" %}
+                        &emsp;<span data-toggle="tooltip" data-placement="right" title="Date of payment : {{ j.fees_paid_date }}">
+                                    {{ j.fees_paid }}
+                            </span>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                    </td>
+                    <td><ul style="margin: 0;padding: 0;list-style:none;">
+                        {% for j in payment_paid %}
+                            {% if i == j.payment %}
+                                {% if j.fees_paid_date|date:'F' == "May" %}
+                        &emsp;<span data-toggle="tooltip" data-placement="right" title="Date of payment : {{ j.fees_paid_date }}">
+                                    {{ j.fees_paid }}
+                            </span>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                    </td>
+                    <td><ul style="margin: 0;padding: 0;list-style:none;">
+                        {% for j in payment_paid %}
+                            {% if i == j.payment %}
+                                {% if j.fees_paid_date|date:'F' == "June" %}
+                        &emsp;<span data-toggle="tooltip" data-placement="right" title="Date of payment : {{ j.fees_paid_date }}">
+                                    {{ j.fees_paid }}
+                            </span>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td><ul style="margin: 0;padding: 0;list-style:none;">
+                        {% for j in payment_paid %}
+                            {% if i == j.payment %}
+                                {% if j.fees_paid_date|date:'F' == "July" %}
+                        &emsp;<span data-toggle="tooltip" data-placement="right" title="Date of payment : {{ j.fees_paid_date }}">
+                                    {{ j.fees_paid }}
+                        </span>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                    </td>
+                    <td><ul style="margin: 0;padding: 0;list-style:none;">
+                        {% for j in payment_paid %}
+                            {% if i == j.payment %}
+                                {% if j.fees_paid_date|date:'F' == "August" %}
+                        &emsp;<span data-toggle="tooltip" data-placement="right" title="Date of payment : {{ j.fees_paid_date }}">
+                                    {{ j.fees_paid }}
+                            </span>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                    </td>
+                    <td><ul style="margin: 0;padding: 0;list-style:none;">
+                        {% for j in payment_paid %}
+                            {% if i == j.payment %}
+                                {% if j.fees_paid_date|date:'F' == "September" %}
+                        &emsp;<span data-toggle="tooltip" data-placement="right" title="Date of payment : {{ j.fees_paid_date }}">
+                                    {{ j.fees_paid }}
+                            </span>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                    </td>
+                    <td><ul style="margin: 0;padding: 0;list-style:none;">
+                        {% for j in payment_paid %}
+                            {% if i == j.payment %}
+                                {% if j.fees_paid_date|date:'F' == "October" %}
+                        &emsp;<span data-toggle="tooltip" data-placement="right" title="Date of payment : {{ j.fees_paid_date }}">
+                                    {{ j.fees_paid }}
+                                {% endif %}
+                        </span>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                    </td>
+                    <td><ul style="margin: 0;padding: 0;list-style:none;">
+                        {% for j in payment_paid %}
+                            {% if i == j.payment %}
+                                {% if j.fees_paid_date|date:'F' == "November" %}
+                        &emsp;<span data-toggle="tooltip" data-placement="right" title="Date of payment : {{ j.fees_paid_date }}">
+                                    {{ j.fees_paid }}
+                            </span>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                    </td>
+                    <td><ul style="margin: 0;padding: 0;list-style:none;">
+                        {% for j in payment_paid %}
+                            {% if i == j.payment %}
+                                {% if j.fees_paid_date|date:'F' == "December" %}
+                        &emsp;<span data-toggle="tooltip" data-placement="right" title="Date of payment : {{ j.fees_paid_date }}">
+                                    {{ j.fees_paid }}
+                            </span>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                    </td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+{% endif %}
+    </div>
+    </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

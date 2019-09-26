@@ -1,0 +1,52 @@
+{% extends "page1/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<style>
+	input{
+		margin-top:10px;
+	}
+
+	#login-form{
+
+	}
+
+	@media only screen and (max-width: 600px){
+		#login{
+			width:100%;
+
+		}
+	}
+	@media only screen and (min-width: 900px){
+		#login{
+			width:35%;
+		}
+	}
+</style>
+
+<div class="container" style="margin-top:100px;" id="login">
+				<div class="card" style="position:relative;padding:20px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+					<div class="card-body" style="">
+
+							<form method="POST">
+								{% csrf_token %}
+								<fieldset class="form-group">
+									<h3 style="font-size:170%;text-align:center;">Log in</h3>
+									<div style="padding:2%;" id="login-form">
+										{{ form|crispy }}
+										<small class="text-muted">
+										<a href="{% url 'password_reset' %}"><span>Forgot Password</span></a>
+										</small>
+									</div>
+								</fieldset>
+								<div class="form-group" style="text-align:center;">
+									<button class="btn btn-primary" type="submit" style="width:25%;padding:9px;margin-top:0px;box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">Login</button>
+								</div>
+							</form>
+							
+
+					</div>
+				</div>
+</div>
+
+{% endblock content %}

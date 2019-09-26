@@ -1,0 +1,16 @@
+{% extends "page1/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+		
+	<div class="content-section">
+		<div class="media">
+			<img class="rounded-circle account-imp" src="{{ user.profile.image.url }}" style="width:40px; height:40px;">
+			<div class="media-body">
+				<h3 class="account-heading">  {{user.username}}</h3>
+				<p class="text-secondary">{{user.email}}</p>
+			</div>
+		</div>
+	
+	</div>
+
+{% endblock content %}

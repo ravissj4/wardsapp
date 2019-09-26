@@ -1,0 +1,79 @@
+{% extends "page1/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<style>
+    .input-field{
+           width: 90%;
+           padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  height: 40px;
+  text-align:center;
+    }
+
+@media only screen and (max-width: 600px){
+		#para1{
+			display: none;
+
+		}
+		#para2{
+			display: visible;
+		}
+		#login-card{
+		    float: left;
+		    width:100%;
+		}
+	}
+	@media only screen and (min-width: 601px){
+		#para1{
+			display: visible;
+		}
+		#para2{
+			display: none;
+		}
+		#login-card{
+		    float:right;
+		    width:65%;
+		}
+	}
+</style>
+
+<div class="" style="padding-top:0px;">
+    <ol class="breadcrumb" style="background: transparent; font-size:14px;font-weight:700;">
+    <li class="breadcrumb-item"><a href="{% url 'project-home' %}" style="text-decoration:none;">Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Student Authentication</li>
+  </ol>
+   <div class="container" style="background: rgba(52, 73, 94, 0.70)">
+    <div class="row" style="padding:50px;">
+        <div class="col" style="padding-top:0px;" id="para1">
+            <p style="text-align:center;color:#FFFFFF;padding-top:15%;font-size:45px;"><b>Log in to continue <br>with <br>Admission Form</b></p>
+
+        </div>
+        <div class="col">
+           <div class="col" style="" id="para2">
+            <p style="text-align:center;color:#FFFFFF;font-size:25px;"><b>Log in to continue with Admission Form</b></p>
+
+        </div>
+        <div class="card" id="login-card" style="padding:30px;margin-top:0px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+            <form class="text-center" method="POST" action="/student_auth" class="needs-validation">
+                {% csrf_token %}
+                <p class="h4 mb-4" style="color: rgba(52, 73, 94,1);font-weight:700;">Log in</p>
+                <input type="text" class="input-field" placeholder="Admission Number" name="admission_number" id="admission_number"  style="margin-bottom:10px;" required>
+                <br><br>
+                <button class="btn btn-primary" type="submit" style="box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">Submit</button>
+                <p><p>Not Registered?</p>
+                    <a href="{% url 'coord' %}" style="text-decoration:none;">Go to Co-ordinator form</a>
+</p>
+            </form>
+        </div>
+        </div>
+    </div>
+       </div>
+</div>
+{% endif %}
+{% endblock content %}

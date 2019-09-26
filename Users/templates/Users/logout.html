@@ -1,0 +1,21 @@
+{% extends "page1/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+		<style>
+
+		</style>
+
+	<div class="container" style="background:#FFFFFF;margin-top:100px;padding:20px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+<center>
+		<h2>You have been logged out</h2>
+		<br>
+		<div style="">
+			<small class="text-muted">
+				<a class="btn btn-primary" href="{% url 'login' %}" role="button" style="color:#FFFFFF">Log In Again</a>
+			</small>
+		</div>
+</center>
+	</div>
+
+
+{% endblock content %}

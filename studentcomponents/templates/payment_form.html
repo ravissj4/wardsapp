@@ -1,0 +1,65 @@
+{% extends "page1/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+{% if user.is_authenticated %}
+<style>
+
+    @media only screen and (max-width: 600px){
+		#payment{
+			width:100%;
+
+		}
+	}
+	@media only screen and (min-width: 900px){
+		#payment{
+			width:35%;
+		}
+	}
+</style>
+<div class="" style="padding-top:0px;text-align:center;">
+    <ol class="breadcrumb" style="background: transparent; font-size:14px; font-weight:700;">
+    <li class="breadcrumb-item"><a href="{% url 'project-home' %}" style="text-decoration:none;">Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Payment Form</li>
+   </ol>
+   <div class="container" id="payment">
+       <div class="card" style="padding:0px;position:relative; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+           <div class="" style="text-align:center;padding:10%;">
+            <form method="POST" action="/paymentForm">
+				{% csrf_token %}
+					<h3 style="font-size:170%;text-align:center;">Payment</h3><br>
+                     <select class="form-control form-control-sm" name="student_admissionno" id="student_admissionno" data-style="btn-white" style="-webkit-appearance: menulist;">
+                                             <option selected disabled><span class="th-sm" style="">Select Student</span> </option>
+                                            {% for admission_no in student_adm_num %}
+                                               <option class="th-sm" style="color:black;" value={{ admission_no.student.admission_number }} name="student_admissionno">{{ admission_no|title }}</option>
+                                            {% endfor %}
+                                         </select>
+                <br>
+
+                        <select name="paytype" id="paytype" class="form-control form-control-sm">
+                            <option selected disabled><span class="th-sm" style="">Select Payment Type</span> </option>
+                          {% for i in lookup_ptype %}
+                          <option value={{ i.lookup_inputvalue }} name="paytype">{{ i.lookup_inputvalue |title }}</option>
+                          {% endfor %}
+                        </select>
+                <br>
+                <div >
+
+                <input type="number" class="form-control form-control-sm" placeholder="Payment Amount" name="pay_amount"><br>
+            </div>
+
+                <div>
+
+                    <input type="date" class="form-control form-control-sm" placeholder="Date of Payment*" name="dop" id="dop" required>
+                </div>
+<br>
+                <div class="form-group" style="text-align:center;">
+					<button class="btn btn-outline-info" type="submit">Submit</button>
+				</div>
+			</form>
+           </div>
+       </div>
+   </div>
+</div>
+{% endif %}
+{% endblock content %}

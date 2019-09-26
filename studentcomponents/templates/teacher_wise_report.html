@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+
+      .heading {
+      font-weight: 700;
+      font-size: 16px;
+      }
+      .head{
+      font-weight: 400;
+      font-size: 14px;
+      margin-left:0px;
+
+      }
+      .hea{
+      font-weight: 400;
+      font-size: 15px;
+      }
+</style>
+<body>
+<p style="text-align:center"> <img src="../media/wards-logo.png"> </p>
+
+
+<u><h3 style="text-align:center;font-size: 18px;">Teacher Wise Report</h3></u><br>
+
+
+
+ <p style="font-size:15px;"><b>Date</b>: {% now "jS F Y" %}</p>
+{% for i in l %}
+<p style="font-size:15px;float:left;">  <b>Teacher Name:</b> {{i }}&nbsp;&nbsp;
+{% endfor %}
+<body>
+<table border="1" cellpadding="5">
+                <tr>
+                    <th>Admission No.</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Date of Join</th>
+                     <th>Age</th>
+                     <th> Class Name</th>
+                </tr>
+
+    <tr>
+        {% for i in k %}
+     <td>{{ i.admission_number }}</td>
+        <td>{{ i.first_name }}</td>
+        <td>{{ i.last_name}}</td>
+        <td>{{ i.date_of_join }}</td>
+        <td>{{ i.age }}</td>
+        <td>{{i.class1}}</td>
+    </tr>
+
+{% endfor %}
+</table>
+
+</body>
+</html>

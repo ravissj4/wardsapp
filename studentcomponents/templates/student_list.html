@@ -1,0 +1,281 @@
+{% extends "page1/base.html" %}
+{% load static %}
+{% block content %}
+{% if user.is_authenticated %}
+<!-- <style>
+#backgroundImage{z-index: 1;}
+
+#backgroundImage:before {
+   content: "";
+   position: absolute;
+   z-index: -1;
+   top: 0;
+   bottom: 0;
+   left: 0;
+   right: 0;
+   background-image: url("/static/studentimg.jpg");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    opacity: 0.2;
+    filter:alpha(opacity=20);
+    height:100%;
+    width:100%;
+ }
+</style>
+<div id="backgroundImage">
+
+    <div class="main">
+
+    </div>
+
+</div>
+-->
+<style>
+    select option: first-child{
+        color:grey;
+    }
+    table{
+        table-layout: auto;
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+
+   .style-table > thead > tr >th{
+    color: #FFFFFF;
+    background-color: black;
+    }
+    option:first-child{
+    background-color: black;
+    }
+
+    @media only screen and (max-width: 600px){
+
+    	.button-style{
+
+    padding:0 5px 0 0;
+    }
+        .select-style{
+            margin-top: -50px;
+        }
+	}
+	@media only screen and (min-width: 900px){
+		.button-style{
+
+    padding:30px 10px 0px 10px;
+    }
+	}
+
+
+    input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+</style>
+
+<script>
+    function student_class_assigned()
+        {
+        var rex = new RegExp($('#student_class_assigned').val());
+		if(rex =="/all/"){clearFilter()}else{
+			$('.content').hide();
+			$('.content').filter(function() {
+			return rex.test($(this).text());
+			}).show();
+        }
+
+</script>
+<div class="" style="padding-top:0px;">
+    <ol class="breadcrumb" style="background: transparent; font-size:14px;font-weight:700;">
+    <li class="breadcrumb-item"><a href="{% url 'project-home' %}" style="text-decoration:none;">Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Student Details</li>
+  </ol>
+<div style="padding:20px;">
+    <div class="card" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); padding: 15px;">
+        <form action="/StudentListView" method="post">
+             {% csrf_token %}
+           <div class="form-row">
+            <div class="form-group col-md-2">
+
+                <input type="number" class="form-control form-control-sm" placeholder="Admission Number" name="student_admissionno"><br>
+            </div>&emsp;
+               <div class="form-group col-md-2 select-style">
+
+                   <select name="option" onchange="this.form.submit();" class="form-control-sm">
+                       <option selected disabled>Select Action</option>
+                       <option value="student_details" name="option">Get Details</option>
+                       <option value="print_student" name="option">Print All Student Report</option>
+                       <option value="print_coord" name="option">Print Co-ordinator Form</option>
+                       <option value="print_adm_form" name="option">Print Admission Form</option>
+                       <option value="view_all" name="option">View all students (Current)</option>
+                       <option value="left_all" name="option">View all students (Left)</option>
+                   </select>
+               </div>
+
+           </div>
+        </form>
+              <div style="overflow:auto;">
+                    <table id="dtBasicExample" class="table table-bordered table-hover style-table auto-index" cellspacing="20" style="background-color:#FFFFFF;">
+                        <thead class="black" style="">
+                            <tr>
+                                <th class="th-sm" style="">Admission No.</th>
+                                <th class="th-sm" style="">Name</th>
+                                <th class="th-sm" style="">Birth Day</th>
+                                <th class="th-sm" style="">Age</th>
+                                <th class="th-sm" style="">Gender</th>
+                                <th class="th-sm" style="">Date of Join</th>
+                                <th class="th-sm" style="">Teacher</th>
+                                <th class="th-sm" style="">Class</th>
+                                <th class="th-sm">Weight</th>
+                                <th class="th-sm" style="">Height</th>
+                                <th class="th-sm" style="">Disability</th>
+                                <th class="th-sm" style="">Disability(%)</th>
+                                <th class="th-sm" style="">Blood Group</th>
+                                <th class="th-sm" style=""><span>Identification</span></th>
+                                <th class="th-sm" style="">Father</th>
+                                <th class="th-sm" style="">Mother</th>
+                                <th class="th-sm" style="">Guardian</th>
+                                <th class="th-sm" style="">Siblings</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% if filter == "admission" %}
+                            {% for i in student_details %}
+                                <tr>
+                                    <td>{{ i.admission_number }}</td>
+                                    <td>{{ i.first_name | title }} {{ i.last_name | title }}</td>
+                                    <td>{{i.student_birthday}}</td>
+                                    <td>{{i.age}}</td>
+                                    <td>{{i.gender}}</td>
+                                    <td>{{i.date_of_join}}</td>
+                                    <td>{{i.class_teacher | title}}</td>
+                                    <td>{{i.class1}}</td>
+                                    <td>{{i.weight}}</td>
+                                    <td>{{i.height}}</td>
+                                    <td>{{i.disability | title }}</td>
+                                    <td>{{i.disability_percentage}}</td>
+                                    <td>{{i.blood_group}}</td>
+                                    <td>{{i.identification_mark | title}}</td>
+                                    <td>
+                                        <ul style="margin: 0;padding: 0;list-style:none;">
+                                        {% for j in father %}
+                                            <li data-toggle="tooltip" data-placement="right" title="Name : {{ j.parent_name|title }}&#013;Contact Num : {{ j.phone_number }}&#013;Email Id: {{ j.email_id }}&#013;Address : {{ j.address|title }}">
+                                            {{ j.parent_name|title }}
+                                            </li>
+                                        {% endfor %}
+                                        </ul>
+                                    </td>
+                                    <td>
+                                    <ul style="margin: 0;padding: 0;list-style:none;">
+                                        {% for j in mother %}
+                                            <li data-toggle="tooltip" data-placement="right" title="Name : {{ j.parent_name|title }}&#013;Contact Num : {{ j.phone_number }}&#013;Email Id: {{ j.email_id }}&#013;Address : {{ j.address|title }}">
+                                            {{ j.parent_name|title }}
+                                            </li>
+                                        {% endfor %}
+                                        </ul>
+                                    </td>
+                                    <td>
+                                    <ul style="margin: 0;padding: 0;list-style:none;">
+                                        {% for j in guardian %}
+                                            <li data-toggle="tooltip" data-placement="right" title="Name : {{ j.parent_name|title }}&#013;Contact Num : {{ j.phone_number }}&#013;Email Id: {{ j.email_id }}&#013;Address : {{ j.address|title }}">
+                                            {{ j.parent_name|title }}
+                                            </li>
+                                        {% endfor %}
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <ul style="margin: 0;padding: 0;list-style:none;">
+                                        {% for j in siblings %}
+                                        <li data-toggle="tooltip" data-placement="right" title="Name : {{  j.sibling_name|title  }}&#013;Age : {{ j.sibling_age }}&#013;Occupation : {{ j.sibling_occupation|title }}">
+                                            {{  j.sibling_name|title  }}
+                                         </li>
+                                        {% endfor %}
+                                        </ul>
+                                    </td>
+                                    <td><a href="{ url '^media/{{ i.picture_student }}' }">{{i.picture_student}}</a></td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                        {% if filter == "all" %}
+                            {% for i in student_adm_num %}
+                                <tr>
+                                    <td>{{ i.admission_number }}</td>
+                                    <td>{{ i.first_name | title }} {{ i.last_name | title }}</td>
+                                    <td>{{i.student_birthday}}</td>
+                                    <td>{{i.age}}</td>
+                                    <td>{{i.gender}}</td>
+                                    <td>{{i.date_of_join}}</td>
+                                    <td>{{i.class_teacher | title}}</td>
+                                    <td>{{i.class1}}</td>
+                                    <td>{{i.weight}}</td>
+                                    <td>{{i.height}}</td>
+                                    <td>{{i.disability | title }}</td>
+                                    <td>{{i.disability_percentage}}</td>
+                                    <td>{{i.blood_group}}</td>
+                                    <td>{{i.identification_mark | title}}</td>
+                                    <td>
+                                        {% for j in student_parents %}
+                                            {% if i == j.student %}
+                                                {% if j.relation_type == "FATHER" %}
+                                                    <ul style="margin: 0;padding: 0;list-style:none;">
+                                                        <li data-toggle="tooltip" data-placement="right" title="Name : {{ j.parent_name|title }}&#013;Contact Num : {{ j.phone_number }}&#013;Email Id: {{ j.email_id }}&#013;">
+                                                        {{ j.parent_name|title }}
+                                                        </li>
+                                                    </ul>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                    <td>
+                                    {% for j in student_parents %}
+                                            {% if i == j.student %}
+                                                {% if j.relation_type == "MOTHER" %}
+                                                    <ul style="margin: 0;padding: 0;list-style:none;">
+                                                        <li data-toggle="tooltip" data-placement="right" title="Name : {{ j.parent_name|title }}&#013;Contact Num : {{ j.phone_number }}&#013;Email Id: {{ j.email_id }}&#013;">
+                                                        {{ j.parent_name|title }}
+                                                        </li>
+                                                    </ul>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                    <td>
+                                    {% for j in student_parents %}
+                                        {% if i == j.student %}
+                                            {% if j.relation_type == "GUARDIAN" %}
+                                                <ul style="margin: 0;padding: 0;list-style:none;">
+                                                    <li data-toggle="tooltip" data-placement="right" title="Name : {{ j.parent_name|title }}&#013;Contact Num : {{ j.phone_number }}&#013;Email Id: {{ j.email_id }}&#013;">
+                                                        {{ j.parent_name|title }}
+                                                    </li>
+                                                </ul>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    </td>
+                                    <td>
+                                        <ul style="margin: 0;padding: 0;list-style:none;">
+                                        {% for j in student_siblings %}
+                                            {% if i == j.student %}
+                                                <li data-toggle="tooltip" data-placement="right" title="Name : {{  j.sibling_name|title  }}&#013;Age : {{ j.sibling_age }}&#013;Occupation : {{ j.sibling_occupation|title }}">
+                                                    {{  j.sibling_name|title  }}
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                        </ul>
+                                    </td>
+
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                        </tbody>
+                    </table>
+                 </div>
+            </div>
+   </div>
+</div>
+</div>
+{% endif %}
+{% endblock content %}

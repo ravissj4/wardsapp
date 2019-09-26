@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{report}}</title>
+
+<style>
+		 table{
+        table-layout:fixed;
+    }
+    table td{
+        word-wrap:break-word;
+    }
+         td{
+        padding:2px;
+        }
+      .heading {
+      font-weight: 500;
+      font-size: 12px;
+      text-align: left;
+      }
+      .head{
+      font-weight: 400;
+      font-size: 12px;
+      margin-left:0px;
+
+      }
+      .hea{
+      font-weight: 400;
+      font-size: 15px;
+      }
+       pre {
+
+                font-size : 10px;
+            }
+       .heading1{
+            font-size:12px;
+            font-weight: 600;
+       }
+       .heading2{
+            font-weight:unset;
+       }
+       .pic{
+         float:right;
+          width: 0%;
+          height:177px;
+          border: 1px solid black;
+          padding: 0px;
+          margin: 30px;
+          text-align: center;
+          margin-top: -70px;
+        }
+</style>
+</head>
+<body>
+    <p style="text-align:center"> <img src="../media/wards-logo.png"> </p>
+    <u><h3 style="text-align:center;font-size: 18px;">Admission Form</h3></u>
+    {% for i in student %}
+        <p style="font-size:15px;float:left;"><b> Admission Number : {{i.admission_number }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span style="font-size:15px;text-align:right;">Date of joining : {{i.date_of_join}}</span></b></p>
+    <table>
+        <tr>
+            <th style="width:70%;">
+    <p class="heading">Student Name : <span class="heading2">{{ i.first_name|title}} {{i.last_name|title}}</span></p>
+    <p class="heading" style="">Date of Birth : <span class="heading2">{{i.student_birthday }}</span></p>
+    <p class="heading">Gender : <span class="heading2">{{i.gender }}</span></p>
+    <p class="heading">Religion : <span class="heading2">{{i.religion|title}}</span></p>
+    <p class="heading">Identification Marks : <span class="heading2">{{i.identification_mark|title }}</span></p>
+    <p class="heading">Blood Group : <span class="heading2">{{i.blood_group }}</span></p>
+
+
+            </th>
+            <th style="width:20%;">
+            <div><p class="pic" style="font-size: 28px; margin-top: 0px;font-weight:unset;color:grey;padding:15px 15px;">Fix <br>Picture<br> here</p></div>
+            </th>
+        </tr>
+
+    </table>
+    <div style="margin-top:10px;">
+         <table  border="0.3" cellpadding="0" >
+            <tr><th style="width:40%"></th><th style="width:60%"></th></tr>
+            <tr><td class="heading" style="width:30%">Nature of Disability  </td><td class="head" style="width:70%">{{i.disability|title }}</td></tr>
+            <tr><td class="heading" style="width:30%">Disability Percentage  </td><td class="head" style="width:70%">{{i.disability_percentage }} %</td></tr>
+            <tr><td class="heading" style="width:30%">Food Preference </td><td class="head" style="width:70%">{{i.food_preference }}</td></tr>
+            <tr><td class="heading" style="width:30%">Reason for Leaving Last Institute  </td><td class="head" style="width:70%">{{i.reason_for_leaving|title }}</td></tr>
+            <tr><td class="heading" style="width:30%">Languages Known  </td><td class="head" style="width:70%">{{i.languages_known|title}}</td></tr>
+            <tr><td class="heading" style="width:30%"> Last Institution Attended </td><td class="head" style="width:70%">{{i.last_attended_institute_name|title }}</td></tr>
+            <tr><td class="heading" style="width:30%">Permanent Address</td><td class="head" style="width:70%">{{i.address|title }}</td></tr>
+        </table>
+    </div>
+        <h4 style="font-size: 13px;"><b>PARENT DETAILS :</b> </h4>
+        <table border="0.5" cellpadding="2">
+            <tr>
+                <th class="heading" style="width:15%">Parent</th>
+                <th class="heading" style="width:30%">Name</th>
+                 <th class="heading" style="width:25%">Occupation</th>
+                 <th class="heading" style="width:20%">Contact No</th>
+                 <th class="heading" style="width:35%">Email Id</th>
+            </tr>
+              {% for j in student_parents %}
+                {% if i == j.student %}
+                     {% if j.relation_type == "FATHER" %}
+                        <tr>
+                            <td class="head" style="width:15%"><b>Father</b></td>
+                            <td class="head" style="width:30%">{{ j.parent_name|title}}</td>
+                            <td class="head" style="width:25%">{{ j.occupation|title}}</td>
+                            <td class="head" style="width:20%">{{ j.phone_number}}</td>
+                            <td class="head" style="width:35%">{{ j.email_id}}</td>
+                        </tr>
+                     {% endif %}
+                {% endif %}
+            {% endfor %}
+
+            {% for j in student_parents %}
+                {% if i == j.student %}
+                     {% if j.relation_type == "MOTHER" %}
+                        <tr>
+                            <td class="head" style="width:15%"><b>Mother</b></td>
+                            <td class="head" style="width:30%">{{ j.parent_name|title}}</td>
+                            <td class="head" style="width:25%">{{ j.occupation|title}}</td>
+                            <td class="head" style="width:20%">{{ j.phone_number}}</td>
+                            <td class="head" style="width:35%">{{ j.email_id}}</td>
+                        </tr>
+                     {% endif %}
+                {% endif %}
+            {% endfor %}
+
+            {% for j in student_parents %}
+                {% if i == j.student %}
+                     {% if j.relation_type == "GUARDIAN" %}
+                         <tr>
+                            <td class="head" style="width:15%"><b>Guardian</b></td>
+                            <td class="head" style="width:30%">{{ j.parent_name|title}}</td>
+                            <td class="head" style="width:25%">{{ j.occupation|title}}</td>
+                            <td class="head" style="width:20%">{{ j.phone_number}}</td>
+                            <td class="head" style="width:35%">{{ j.email_id}}</td>
+                        </tr>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </table>
+            <h4 style="font-size: 13px;"><b>SIBLING DETAILS : </b></h4>
+        <table border="0.5" cellpadding="2">
+            <tr>
+                <th class="heading">Sibling Name </th>
+                <th class="heading">Sibling Age </th>
+                <th class="heading">Sibling Occupation</th>
+            </tr>
+            {% for k in student_sibling %}
+                {% if i == k.student %}
+                    <tr>
+                        <td class="head">{{ k.sibling_name|title}}</td>
+                        <td class="head">{{ k.sibling_age}}</td>
+                        <td class="head">{{ k.sibling_occupation|title}}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </table><br>
+    {% endfor %}
+    <br>
+    <b> <font size="4"> DECLARATION : </font></b>
+    <p><font size="4" style="font-weight:unset;">
+        I Sri/Smt, ___________________________________ Father/Mother/Gaurdian of {% for i in student %} <span style="font-size:14px;font-weight:700;">{{i.first_name |title}} {{i.last_name|title}}</span> {% endfor %}  good faith
+    have this day had me WARD/Son/Daughter ,admitted at WARDS , and the said members of WARDS,also in good  faith
+    have accepted my ward for my education/training as per the programme. I hereby undertake that should there take place any
+    untoward incident that may prove to be detrimental,harmful or otherwise to my wards whether during the course of his/
+    her education/training or after working hours of WARDS,I /We shall not hold the institution or any of its members,
+    directly or indirectly responsible for in view of my child/ward being disabled.</font></p> <br>
+
+     <p style="font-size:12px;float:left;"> Date : ________________&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <span style="font-size:12px;text-align:right;">Signature :_______________</span></p>
+      <p style="font-size:12px;float:left;"> Place : ________________
+
+</body>
+
+</html>
