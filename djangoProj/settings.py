@@ -86,10 +86,10 @@ WSGI_APPLICATION = 'djangoProj.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'wards',
-        'USER': 'root',
-        'PASSWORD': 'wards',
-        'HOST': 'localhost',
+        'NAME': 'wardsdb',
+        'USER': 'test@wardsdb',
+        'PASSWORD': 'Wards@2019##',
+        'HOST': 'wardsdb.mysql.database.azure.com',
         'PORT': '3306',
     }
 }
