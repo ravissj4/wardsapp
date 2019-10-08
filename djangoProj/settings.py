@@ -87,7 +87,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'mysql',
-        'USER': 'test',
+        'USER': 'test@wardsdb',
         'PASSWORD': 'Wards@2019##',
         'HOST': 'wardsdb.mysql.database.azure.com',
         'PORT': '3306',
