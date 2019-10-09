@@ -91,6 +91,9 @@ DATABASES = {
         'PASSWORD': 'Wards@2019##',
         'HOST': 'wardsdb.mysql.database.azure.com',
         'PORT': '3306',
+	'OPTIONS': {
+            'ssl': {'ssl-ca': '/var/www/html/BaltimoreCyberTrustRoot.crt.pem'}
+	}
     }
 }
 
