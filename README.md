@@ -1,2 +1,0 @@
-# wards
-WARDS office website
