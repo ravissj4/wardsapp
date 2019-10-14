@@ -63,6 +63,8 @@ urlpatterns = [
  path('report', student_views.report, name="report"),
  path('assessment_report_auth_view/', student_views.assessment_report_auth_view, name="assessment_report_auth_view"),
  path('assessment_report_auth_view', student_views.assessment_report_auth_view, name="assessment_report_auth_view"),
+ path('assessment_form_submit/', student_views.assessment_form_submit, name="assessment_form_submit"),
+ path('assessment_form_submit2', student_views.assessment_form_submit2, name="assessment_form_submit2")
 
 ]
 
