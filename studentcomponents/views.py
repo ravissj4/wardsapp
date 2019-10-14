@@ -12,6 +12,7 @@ from django.template.defaultfilters import date
 from django.core.files.storage import FileSystemStorage
 from django.contrib import messages
 from django.db.models import Avg, Max, Min, Sum, Count
+import collections
 
 
 def addstr(arg1, arg2):
