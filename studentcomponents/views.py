@@ -632,5 +632,84 @@ def assessment_report_auth_view(request):
     return render(request, 'parentcomponents/parentHomePage.html')
 
 
+def assessment_form_submit(request):
+    if request.method == 'POST':
+        adm = request.POST['adm']
+        show_form2 = "show"
+        # If student found in StudentDetails table
+        if StudentDetail.objects.filter(admission_number=adm).exists():
+            student = StudentDetail.objects.get(admission_number=adm)
+            not_in_assess = StudentDetail.objects.filter(assessmentadmission__isnull=True)
+            # If student not found in AssessmentAdmission table
+            if student in not_in_assess:
+                student_details = StudentDetail.objects.get(admission_number=adm)
+                # Ordering all the lookup values in sequence
+                assessment = "Assessment"
+                lookup = LookUp.objects.filter(lookup_type=assessment)
+                # list_1 has values which wont have headings
+                list_1 = []
+                # list_2 has list of all headings(repetitive)
+                list_2 = []
+                # list_3 has values which will have headings
+                list_3 = []
+                # list_4 has list of headings(non repeating)
+                list_4 = []
+                # list_5 has count of headings giving number of values inside each heading
+                list_5 = []
+                # loop to get values which wont have heading
+                for i in lookup:
+                    id_for_each = i.id
+                    input_value = i.lookup_inputvalue
+                    input_value = input_value.lower()
+                    output_value = i.lookup_outputvalue
+                    output_value = output_value.lower()
+                    if input_value == output_value:
+                        list_1.append(input_value)
+                    else:
+                        list_2.append(input_value)
+                        list_3.append(output_value)
+                # getting count of heading
+                c = collections.Counter(list_2)
+                print("count value:", c)
+                for j in c:
+                    print("headings", j)
+                    print("heading count:", c[j])
+                    count = c[j]
+                    list_4.append(j)
+                    list_5.append(count)
+                print("list of val without heading", list_1)
+                print("list of heading", list_2)
+                print("heading distinct", list_4)
+                print("count of headings:", list_5)
+                print("list of val with heading", list_3)
+                args = {"student_details": student_details, "lookup": lookup, "show_form2": show_form2,
+                        'list_1': list_1, 'list_2': list_2, 'list_3': list_3, 'list_4': list_4, 'list_5': list_5}
+                return render(request, 'assessment_new.html', args)
+            # student found in AssessmentAdmission table
+            else:
+                messages.warning(request, 'Assessment form already submitted !')
+                redirect('/')
+        # student not submitted admission form
+        else:
+            messages.warning(request,
+                             'No student found with the admission number, Admission form not submitted.')
+            redirect('assessment_form_submit')
+    return render(request, 'assessment_new.html')
+
+
+def assessment_form_submit2(request):
+    assessment_list = LookUp.objects.filter(lookup_type="assessment")
+    stud = request.POST.get("adm")
+    print(stud)
+    adme = StudentDetail.objects.get(admission_number=stud)
+    for item in assessment_list:
+        grade = request.POST.get("a+" + str(item.id))
+        adm = LookUp.objects.get(id=item.id)
+        assess = AssessmentAdmission(lookup_assessment_object=adm, admission_number=adme, heading=item.lookup_outputvalue, field=grade)
+        assess.save()
+    messages.success(request, "Assessment form submitted successfully.")
+    return redirect('assessment_form_submit')
+
+
 
 
