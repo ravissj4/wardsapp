@@ -190,3 +190,10 @@ class Assessment(models.Model):
     admission_number = models.ForeignKey('StudentDetail', on_delete=models.CASCADE)
     lookup_type = models.ForeignKey('LookUp', on_delete=models.CASCADE)
     grade = models.CharField(null=True, max_length=5)
+    
+    
+class AssessmentAdmission(models.Model):
+    admission_number = models.ForeignKey('StudentDetail', on_delete=models.CASCADE)
+    lookup_assessment_object = models.ForeignKey('LookUp', on_delete=models.CASCADE)
+    heading = models.CharField(max_length=200, null=True, blank=True)
+    field = models.CharField(max_length=200, null=True, blank=True)    
